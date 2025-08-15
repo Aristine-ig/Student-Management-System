@@ -13,15 +13,15 @@ export function StudentsList({ students }: StudentsListProps) {
 
   const filteredStudents = useMemo(() => {
     return students.filter(student => {
-      const matchesSearch =
+      const matchesSearch = 
         student.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         student.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         student.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
         student.studentId.toLowerCase().includes(searchTerm.toLowerCase());
-
+      
       const matchesStatus = statusFilter === 'All' || student.status === statusFilter;
       const matchesCourse = courseFilter === 'All' || student.course === courseFilter;
-
+      
       return matchesSearch && matchesStatus && matchesCourse;
     });
   }, [students, searchTerm, statusFilter, courseFilter]);

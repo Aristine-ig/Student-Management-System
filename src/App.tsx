@@ -4,14 +4,17 @@ import { Dashboard } from './components/Dashboard';
 import { StudentsList } from './components/StudentsList';
 import { AddStudent } from './components/AddStudent';
 import { Student } from './types/Student';
-import { fetchStudents } from './services/studentService';
+import { fetchStudents, saveStudentsToStorage } from './services/studentService';
 
 type ActiveTab = 'dashboard' | 'students' | 'add-student';
 
 function App() {
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
+  const [activeTab, setActiveTab] = useState<ActiveTab>(() => {
+    const savedTab = localStorage.getItem('activeTab');
+    return (savedTab as ActiveTab) || 'dashboard';
+  });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -29,6 +32,18 @@ function App() {
 
     loadStudents();
   }, []);
+
+  // Save to localStorage whenever students data changes
+  useEffect(() => {
+    if (students.length > 0) {
+      saveStudentsToStorage(students);
+    }
+  }, [students]);
+
+  // Save active tab to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('activeTab', activeTab);
+  }, [activeTab]);
 
   const handleAddStudent = (newStudent: Omit<Student, 'id'>) => {
     const studentWithId: Student = {
