@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Student Information Management System
 
 A modern, responsive web application for managing student information with a clean and professional interface.
